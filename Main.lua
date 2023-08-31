@@ -12,7 +12,7 @@ local function GetClosestPlayer()
 	local MagnitudeTable = {}
 
 	for i, v in pairs(game.Players:GetPlayers()) do
-		if v.Character and v ~= Player and v.Character:FindFirstChildOfClass("Humanoid").Health > 0 then
+		if v.Character and v ~= Player and v.Character:FindFirstChildOfClass("Humanoid").Health > 0 and v.Team ~= Player.Team then
 			table.insert(MagnitudeTable, (Character.Head.Position - v.Character.Head.Position).Magnitude)
 		end	
 	end	
