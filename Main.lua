@@ -3,9 +3,33 @@ local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local NoClipping = false
 local InfJump = false
 local ESP = false
+local Aimlock = false
 local Highlights = {}
 local Player = game.Players.LocalPlayer
 local Character = Player.Character
+
+local function GetClosestPlayer()
+	local MagnitudeTable = {}
+
+	for i, v in pairs(game.Players:GetPlayers()) do
+		if v.Character and v ~= Player and v.Character:FindFirstChildOfClass("Humanoid").Health > 0 then
+			table.insert(MagnitudeTable, (Character.Head - v.Character.Head).Magnitude)
+		end	
+	end	
+
+	table.sort(MagnitudeTable, function(a, b)
+		return a < b
+	end)
+
+	for i, v in pairs(game.Players:GetPlayers()) do
+		if v.Character and v ~= Player then
+			if (Character.Head - v.Character.Head).Magnitude == MagnitudeTable[1] then
+				return v.Character.Head
+			end	
+		end	
+	end
+
+end	
 
 local Window = Rayfield:CreateWindow({
 	Name = "Nebline",
@@ -86,35 +110,6 @@ local Toggle3 = MainTab:CreateToggle({
 							if game.Players:GetPlayerFromCharacter(v.Parent) ~= Player then
 								local HighLight = Instance.new("Highlight", v.Parent)
 								table.insert(Highlights, HighLight)
-
-								local espgui = Instance.new("BillboardGui")
-								local EspName = Instance.new("TextLabel")
-
-								espgui.Name = "espgui"
-								espgui.Parent = v.Parent.Head
-								espgui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-								espgui.Active = true
-								espgui.ExtentsOffset = Vector3.new(0, 1, 0)
-								espgui.LightInfluence = 1.000
-								espgui.Size = UDim2.new(0, 200, 0, 50)
-
-								EspName.Name = "EspName"
-								EspName.Parent = espgui
-								EspName.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-								EspName.BackgroundTransparency = 1.000
-								EspName.BorderColor3 = Color3.fromRGB(0, 0, 0)
-								EspName.BorderSizePixel = 0
-								EspName.Size = UDim2.new(0, 200, 0, 50)
-								EspName.Font = Enum.Font.SourceSans
-								EspName.Text = "nigga"
-								EspName.TextColor3 = Color3.fromRGB(0, 170, 255)
-								EspName.TextScaled = true
-								EspName.TextSize = 14.000
-								EspName.TextWrapped = true
-
-								EspName.Text = v.Parent.Name
-
-								table.insert(Highlights, espgui)
 							end	
 						end
 					end
@@ -133,6 +128,17 @@ local Toggle3 = MainTab:CreateToggle({
 	end,
 })
 
+local Toggle4 = MainTab:CreateToggle({
+	Name = "Aimlock",
+	CurrentValue = false,
+	Flag = "Toggle4",
+	Callback = function(Value)
+		Aimlock = Value
+	end,
+})
+
+local IsPressingBtn2 = false
+
 game:GetService("RunService").RenderStepped:Connect(function()
 	if NoClipping == true then
 		for i, v in pairs(Character:GetDescendants()) do
@@ -147,10 +153,29 @@ game:GetService("RunService").RenderStepped:Connect(function()
 			end
 		end
 	end
+	if IsPressingBtn2 == true and Aimlock == true then
+		local Closest = GetClosestPlayer()
+
+		workspace.CurrentCamera.CFrame = CFrame.new(workspace.CurrentCamera.CFrame, Closest)
+	end	
 end)
 
 game:GetService("UserInputService").JumpRequest:Connect(function()
 	if InfJump == true then
 		Character:FindFirstChildOfClass("Humanoid"):ChangeState(Enum.HumanoidStateType.Jumping)
 	end
+end)
+
+game:GetService("UserInputService").InputBegan:Connect(function(Key)
+	if Key.KeyCode == Enum.UserInputState.MouseButton2 then
+		if Aimlock == true then
+			IsPressingBtn2 = true
+		end	
+	end	
+end)
+
+game:GetService("UserInputService").InputEnded:Connect(function(Key)
+	if Key.KeyCode == Enum.UserInputState.MouseButton2 then
+		IsPressingBtn2 = false
+	end	
 end)
