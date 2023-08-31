@@ -83,8 +83,39 @@ local Toggle3 = MainTab:CreateToggle({
 				if v:IsA("Humanoid") then
 					if v.Parent:IsA("Model") then
 						if game.Players:GetPlayerFromCharacter(v.Parent) then
-							local HighLight = Instance.new("Highlight", v.Parent)
-							table.insert(Highlights, HighLight)
+							if game.Players:GetPlayerFromCharacter(v.Parent) ~= Player then
+								local HighLight = Instance.new("Highlight", v.Parent)
+								table.insert(Highlights, HighLight)
+
+								local espgui = Instance.new("BillboardGui")
+								local EspName = Instance.new("TextLabel")
+
+								espgui.Name = "espgui"
+								espgui.Parent = v.Parent.Head
+								espgui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+								espgui.Active = true
+								espgui.ExtentsOffset = Vector3.new(0, 1, 0)
+								espgui.LightInfluence = 1.000
+								espgui.Size = UDim2.new(0, 200, 0, 50)
+
+								EspName.Name = "EspName"
+								EspName.Parent = espgui
+								EspName.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+								EspName.BackgroundTransparency = 1.000
+								EspName.BorderColor3 = Color3.fromRGB(0, 0, 0)
+								EspName.BorderSizePixel = 0
+								EspName.Size = UDim2.new(0, 200, 0, 50)
+								EspName.Font = Enum.Font.SourceSans
+								EspName.Text = "nigga"
+								EspName.TextColor3 = Color3.fromRGB(0, 170, 255)
+								EspName.TextScaled = true
+								EspName.TextSize = 14.000
+								EspName.TextWrapped = true
+
+								EspName.Text = v.Parent.Name
+
+								table.insert(Highlights, espgui)
+							end	
 						end
 					end
 				end
