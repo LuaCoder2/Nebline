@@ -156,7 +156,9 @@ game:GetService("RunService").RenderStepped:Connect(function()
 	if IsPressingBtn2 == true and Aimlock == true then
 		local Closest = GetClosestPlayer()
 
-		workspace.CurrentCamera.CFrame = CFrame.new(workspace.CurrentCamera.CFrame, Closest)
+		print(Closest.Name)
+
+		workspace.CurrentCamera.CFrame = CFrame.new(workspace.CurrentCamera.CFrame, Closest.CFrame)
 	end	
 end)
 
