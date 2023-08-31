@@ -13,7 +13,7 @@ local function GetClosestPlayer()
 
 	for i, v in pairs(game.Players:GetPlayers()) do
 		if v.Character and v ~= Player and v.Character:FindFirstChildOfClass("Humanoid").Health > 0 then
-			table.insert(MagnitudeTable, (Character.Head - v.Character.Head).Magnitude)
+			table.insert(MagnitudeTable, (Character.Head.Position - v.Character.Head.Position).Magnitude)
 		end	
 	end	
 
@@ -23,7 +23,7 @@ local function GetClosestPlayer()
 
 	for i, v in pairs(game.Players:GetPlayers()) do
 		if v.Character and v ~= Player then
-			if (Character.Head - v.Character.Head).Magnitude == MagnitudeTable[1] then
+			if (Character.Head.Position - v.Character.Head.Position).Magnitude == MagnitudeTable[1] then
 				return v.Character.Head
 			end	
 		end	
@@ -156,9 +156,7 @@ game:GetService("RunService").RenderStepped:Connect(function()
 	if IsPressingBtn2 == true and Aimlock == true then
 		local Closest = GetClosestPlayer()
 
-		print(Closest.Name)
-
-		workspace.CurrentCamera.CFrame = CFrame.new(workspace.CurrentCamera.CFrame, Closest.CFrame)
+		workspace.CurrentCamera.CFrame = CFrame.new(workspace.CurrentCamera.CFrame.Position, Closest.Position)
 	end	
 end)
 
