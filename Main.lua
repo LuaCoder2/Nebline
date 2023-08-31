@@ -167,7 +167,7 @@ game:GetService("UserInputService").JumpRequest:Connect(function()
 end)
 
 game:GetService("UserInputService").InputBegan:Connect(function(Key)
-	if Key.KeyCode == Enum.UserInputState.MouseButton2 then
+	if Key.UserInputType == Enum.UserInputType.MouseButton2 then
 		if Aimlock == true then
 			IsPressingBtn2 = true
 		end	
@@ -175,7 +175,7 @@ game:GetService("UserInputService").InputBegan:Connect(function(Key)
 end)
 
 game:GetService("UserInputService").InputEnded:Connect(function(Key)
-	if Key.KeyCode == Enum.UserInputState.MouseButton2 then
+	if Key.UserInputType == Enum.UserInputType.MouseButton2 then
 		IsPressingBtn2 = false
 	end	
 end)
